@@ -1,0 +1,24 @@
+{
+  "name": "pimcore/inspire-cocktail-demo",
+  "license": "proprietary",
+  "type": "pimcore-bundle",
+  "description": "Pimcore Studio Inspire Cocktail Demo Bundle",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "pimcore/studio-ui-bundle": "^0.12.9 || ^1.0",
+    "pimcore/studio-backend-bundle": "^0.15.17 || ^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pimcore\\Bundle\\InspireCocktailDemoBundle\\": "src/"
+    }
+  },
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "Pimcore\\Bundle\\InspireCocktailDemoBundle\\PimcoreInspireCocktailDemoBundle"
+      ]
+    }
+  }
+}
