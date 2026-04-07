@@ -7,3 +7,6 @@ services:
     Pimcore\Bundle\InspireCocktailDemoBundle\Webpack\WebpackEntryPointProvider:
         tags:
             - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\Command\:
+        resource: '../src/Command'

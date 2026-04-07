@@ -1,0 +1,131 @@
+{
+    "description": "",
+    "parentClass": "",
+    "implementsInterfaces": "",
+    "listingParentClass": "",
+    "useTraits": "",
+    "listingUseTraits": "",
+    "allowInherit": false,
+    "allowVariants": false,
+    "showVariants": false,
+    "layoutDefinitions": {
+        "fieldtype": "panel",
+        "name": "pimcore_root",
+        "title": "",
+        "datatype": "layout",
+        "children": [
+            {
+                "fieldtype": "panel",
+                "name": "Ingredient",
+                "title": "Ingredient",
+                "datatype": "layout",
+                "children": [
+                    {
+                        "fieldtype": "localizedfields",
+                        "name": "localizedfields",
+                        "title": "",
+                        "datatype": "data",
+                        "children": [
+                            {
+                                "fieldtype": "input",
+                                "name": "name",
+                                "title": "Name",
+                                "datatype": "data",
+                                "noteditable": false,
+                                "invisible": false,
+                                "visibleGridView": true,
+                                "visibleSearch": true,
+                                "mandatory": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "tooltip": "",
+                                "width": "",
+                                "defaultValue": null,
+                                "columnLength": 190,
+                                "phpdocType": "string"
+                            },
+                            {
+                                "fieldtype": "textarea",
+                                "name": "description",
+                                "title": "Description",
+                                "datatype": "data",
+                                "noteditable": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false,
+                                "mandatory": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "tooltip": "",
+                                "width": "",
+                                "height": "",
+                                "phpdocType": "string"
+                            }
+                        ],
+                        "noteditable": false,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "tooltip": "",
+                        "hideLabelsWhenTabsReached": 0,
+                        "labelWidth": 100,
+                        "labelAlign": "left",
+                        "referencedFields": [],
+                        "permissionView": null,
+                        "permissionEdit": null,
+                        "fieldtype": "localizedfields"
+                    },
+                    {
+                        "fieldtype": "select",
+                        "name": "unit",
+                        "title": "Unit",
+                        "datatype": "data",
+                        "noteditable": false,
+                        "invisible": false,
+                        "visibleGridView": true,
+                        "visibleSearch": true,
+                        "mandatory": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "tooltip": "",
+                        "width": "",
+                        "options": [],
+                        "defaultValue": null,
+                        "optionsProviderType": "select_options",
+                        "optionsProviderClass": "Pimcore\\Bundle\\CoreBundle\\OptionsProvider\\SelectOptionsOptionsProvider",
+                        "optionsProviderData": "Unit",
+                        "columnLength": 190,
+                        "phpdocType": "string",
+                        "dynamicOptions": false
+                    }
+                ]
+            }
+        ]
+    },
+    "icon": "",
+    "group": "CocktailDemo",
+    "compositeIndices": [],
+    "propertyVisibility": {
+        "grid": {
+            "id": true,
+            "path": true,
+            "published": true,
+            "modificationDate": true,
+            "creationDate": true
+        },
+        "search": {
+            "id": true,
+            "path": true,
+            "published": true,
+            "modificationDate": true,
+            "creationDate": true
+        }
+    },
+    "enableGridLocking": false
+}
