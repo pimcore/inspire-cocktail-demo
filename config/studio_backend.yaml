@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\Controller\Studio\:
+        resource: '../src/Controller/Studio'
+        tags: [ 'controller.service_arguments' ]

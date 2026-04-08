@@ -1,0 +1,5 @@
+bundle_tag_inspire_cocktail_demo_description: 'Operations related to the Inspire Cocktail Demo Bundle'
+
+bundle_inspire_cocktail_demo_get_demo_description: 'A demo endpoint to verify the Inspire Cocktail Demo Studio integration is working correctly.'
+bundle_inspire_cocktail_demo_get_demo_summary: 'Get demo status'
+bundle_inspire_cocktail_demo_get_demo_success_response: 'Demo response confirming the bundle is working'
