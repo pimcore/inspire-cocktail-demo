@@ -11,9 +11,8 @@
     "check-types": "tsc --noEmit"
   },
   "license": "proprietary",
-  "private": true,
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "1.0.0-canary.20260403-152759-e15052f",
+    "@pimcore/studio-ui-bundle": "^1.0.0-canary.20260408-083445-d99f41c",
     "react": "18.3.x",
     "react-dom": "18.3.x",
     "uuid": "^10.0.0"
@@ -22,6 +21,7 @@
     "@module-federation/rsbuild-plugin": "^0.13.1",
     "@rsbuild/core": "^1.3.16",
     "@rsbuild/plugin-react": "^1.3.1",
+    "@rsbuild/plugin-svgr": "^1.3.1",
     "@types/react-dom": "18.3.x",
     "@types/webpack-env": "^1.18.4",
     "typescript": "^5.3.3"
