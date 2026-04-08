@@ -22,3 +22,7 @@ services:
     # Repository
     Pimcore\Bundle\InspireCocktailDemoBundle\Repository\CocktailRepositoryInterface:
         class: Pimcore\Bundle\InspireCocktailDemoBundle\Repository\CocktailRepository
+
+    # Grid Transformer
+    Pimcore\Bundle\InspireCocktailDemoBundle\Grid\Column\Transformer\IngredientsToPartyMode:
+        tags: [ 'pimcore.studio_backend.grid_transformer' ]
