@@ -7,3 +7,5 @@ services:
     Pimcore\Bundle\InspireCocktailDemoBundle\Controller\Studio\:
         resource: '../src/Controller/Studio'
         tags: [ 'controller.service_arguments' ]
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\EventSubscriber\CocktailIconSubscriber: ~
