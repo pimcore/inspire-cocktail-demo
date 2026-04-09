@@ -17,7 +17,6 @@ import {
 import { useDataObjectGetByIdQuery } from '@pimcore/studio-ui-bundle/api/data-object'
 import type { DataObjectWithDetailData } from '@pimcore/studio-ui-bundle/api/data-object'
 import { useShoppingList } from '../../hooks/use-shopping-list'
-import { useShoppingListPrefill } from '../../hooks/use-shopping-list-prefill'
 import { useStyles } from './shopping-list-container.styles'
 
 // ─── Local types ─────────────────────────────────────────────────────────────
@@ -195,8 +194,6 @@ const CocktailIngredientFetcher = (props: CocktailIngredientFetcherProps): null 
 
 export const ShoppingListContainer = (): React.JSX.Element => {
   const { items, removeCocktail, setCocktailQuantity, clearShoppingList } = useShoppingList()
-
-  useShoppingListPrefill()
 
   const [form] = Form.useForm()
 

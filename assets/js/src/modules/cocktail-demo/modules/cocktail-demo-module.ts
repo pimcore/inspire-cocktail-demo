@@ -7,7 +7,10 @@ import {
   type DynamicTypeFieldDefinitionRegistry,
   type GroupInfo
 } from '@pimcore/studio-ui-bundle/modules/field-definitions'
-import { type DynamicTypeObjectLayoutRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import {
+  type DynamicTypeObjectLayoutRegistry,
+  type DynamicTypePipelineRegistry
+} from '@pimcore/studio-ui-bundle/modules/element'
 import CocktailGlassIcon from '../assets/icons/cocktail-glass.inline.svg?react'
 import { CocktailListingContainer } from '../components/cocktail-listing/cocktail-listing-container'
 import {
@@ -19,6 +22,7 @@ import {
   SHOPPING_LIST_WIDGET_ID
 } from '../components/shopping-list-sidebar-button/shopping-list-sidebar-button'
 import { ShoppingListContainer } from '../components/shopping-list/shopping-list-container'
+import { IngredientsToPartyModeTransformer } from '../grid/transformers/ingredients-to-party-mode'
 
 // Importing the slice registers it into the Redux store via injectSliceWithState
 import '../store/cocktail-shopping-list-slice'
@@ -28,6 +32,8 @@ const INTERACTION_GROUP_INFO: GroupInfo = {
   translationKey: 'field-definition.groups.interaction',
   order: 1100
 }
+
+const TRANSFORMER_SERVICE_ID = 'CocktailDemo/Grid/Transformers/IngredientsToPartyMode'
 
 export const CocktailDemoModule: AbstractModule = {
   onInit: () => {
@@ -84,6 +90,16 @@ export const CocktailDemoModule: AbstractModule = {
     )
     objectLayoutRegistry.registerDynamicType(
       container.get('CocktailDemo/ObjectLayout/AddToShoppingList')
+    )
+
+    // 8. Register the IngredientsToPartyMode grid transformer
+    container.bind(TRANSFORMER_SERVICE_ID).to(IngredientsToPartyModeTransformer).inSingletonScope()
+
+    const transformersRegistry = container.get<DynamicTypePipelineRegistry>(
+      serviceIds['DynamicTypes/Grid/TransformersRegistry']
+    )
+    transformersRegistry.registerDynamicType(
+      container.get<IngredientsToPartyModeTransformer>(TRANSFORMER_SERVICE_ID)
     )
   }
 }
