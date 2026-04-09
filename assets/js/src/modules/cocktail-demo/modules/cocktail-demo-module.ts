@@ -3,6 +3,11 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { type ComponentRegistry, componentConfig } from '@pimcore/studio-ui-bundle/modules/app'
+import {
+  type DynamicTypeFieldDefinitionRegistry,
+  type GroupInfo
+} from '@pimcore/studio-ui-bundle/modules/field-definitions'
+import { type DynamicTypeObjectLayoutRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import CocktailGlassIcon from '../assets/icons/cocktail-glass.inline.svg?react'
 import { CocktailListingContainer } from '../components/cocktail-listing/cocktail-listing-container'
 import {
@@ -17,6 +22,12 @@ import { ShoppingListContainer } from '../components/shopping-list/shopping-list
 
 // Importing the slice registers it into the Redux store via injectSliceWithState
 import '../store/cocktail-shopping-list-slice'
+
+const INTERACTION_GROUP_INFO: GroupInfo = {
+  icon: { type: 'name', value: 'cocktail-glass' },
+  translationKey: 'field-definition.groups.interaction',
+  order: 1100
+}
 
 export const CocktailDemoModule: AbstractModule = {
   onInit: () => {
@@ -57,5 +68,22 @@ export const CocktailDemoModule: AbstractModule = {
       priority: 290,
       component: ShoppingListSidebarButton
     })
+
+    // 6. Register the "Add to Shopping List" field definition type
+    const fieldDefinitionRegistry = container.get<DynamicTypeFieldDefinitionRegistry>(
+      'DynamicTypes/FieldDefinitionRegistry'
+    )
+    fieldDefinitionRegistry.registerDropdownGroupInfo('interaction', INTERACTION_GROUP_INFO)
+    fieldDefinitionRegistry.registerDynamicType(
+      container.get('CocktailDemo/FieldDefinition/AddToShoppingList')
+    )
+
+    // 7. Register the "Add to Shopping List" object layout renderer
+    const objectLayoutRegistry = container.get<DynamicTypeObjectLayoutRegistry>(
+      'DynamicTypes/ObjectLayoutRegistry'
+    )
+    objectLayoutRegistry.registerDynamicType(
+      container.get('CocktailDemo/ObjectLayout/AddToShoppingList')
+    )
   }
 }
