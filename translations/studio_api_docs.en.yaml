@@ -1,0 +1,13 @@
+bundle_tag_cocktail_demo_description: 'Cocktail Demo bundle endpoints'
+
+bundle_cocktail_demo_finder_options_get_summary: 'Get available options for a finder field'
+bundle_cocktail_demo_finder_options_get_description: |
+    Returns distinct values with counts for the requested cocktail field (strength, occasion, or flavourProfile),
+    optionally filtered by the currently active selections in other fields.
+bundle_cocktail_demo_finder_options_get_success_description: 'Available options with counts for the requested field'
+
+bundle_cocktail_demo_finder_results_get_summary: 'Get cocktails matching the finder selections'
+bundle_cocktail_demo_finder_results_get_description: |
+    Returns cocktails matching the provided filter selections for strength, occasion, and flavourProfile.
+    All filters are optional; omitting a filter returns all values for that field.
+bundle_cocktail_demo_finder_results_get_success_description: 'List of matching cocktails with full details'

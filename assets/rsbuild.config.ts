@@ -1,5 +1,6 @@
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
+import { pluginSvgr } from '@rsbuild/plugin-svgr'
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin'
 import { pluginGenerateEntrypoints } from '@pimcore/studio-ui-bundle/rsbuild/plugins'
 import { createDynamicRemote } from '@pimcore/studio-ui-bundle/rsbuild/utils'
@@ -67,6 +68,12 @@ export default defineConfig({
   plugins: [
     pluginGenerateEntrypoints(),
     pluginReact(),
+    pluginSvgr({
+      svgrOptions: {
+        icon: true,
+        typescript: true,
+      }
+    }),
     pluginModuleFederation({
       name: 'pimcore_inspire_cocktail_demo_bundle',
       filename: 'static/js/remoteEntry.js',
