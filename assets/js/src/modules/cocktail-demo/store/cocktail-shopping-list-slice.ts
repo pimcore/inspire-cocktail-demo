@@ -20,14 +20,8 @@ const cocktailShoppingListSlice = createSlice({
 
     removeCocktail (state, action: PayloadAction<number>): void {
       const id = action.payload
-      const current = state.items[id] ?? 0
-
-      if (current <= 1) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete state.items[id]
-      } else {
-        state.items[id] = current - 1
-      }
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete state.items[id]
     },
 
     setCocktailQuantity (state, action: PayloadAction<{ id: number, quantity: number }>): void {
