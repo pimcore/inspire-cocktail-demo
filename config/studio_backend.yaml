@@ -23,6 +23,14 @@ services:
     Pimcore\Bundle\InspireCocktailDemoBundle\Repository\CocktailRepositoryInterface:
         class: Pimcore\Bundle\InspireCocktailDemoBundle\Repository\CocktailRepository
 
+    # Shopping List Service
+    Pimcore\Bundle\InspireCocktailDemoBundle\Service\ShoppingListServiceInterface:
+        class: Pimcore\Bundle\InspireCocktailDemoBundle\Service\ShoppingListService
+
+    # Shopping List Hydrator
+    Pimcore\Bundle\InspireCocktailDemoBundle\Hydrator\ShoppingListHydratorInterface:
+        class: Pimcore\Bundle\InspireCocktailDemoBundle\Hydrator\ShoppingListHydrator
+
     # Grid Transformer
     Pimcore\Bundle\InspireCocktailDemoBundle\Grid\Column\Transformer\IngredientsToPartyMode:
         tags: [ 'pimcore.studio_backend.grid_transformer' ]
