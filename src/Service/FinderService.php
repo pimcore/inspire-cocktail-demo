@@ -8,9 +8,9 @@ use Pimcore\Bundle\GenericDataIndexBundle\Model\Search\Modifier\Filter\FieldType
 use Pimcore\Bundle\GenericDataIndexBundle\Service\Search\SearchService\DataObject\DataObjectSearchServiceInterface;
 use Pimcore\Bundle\GenericDataIndexBundle\Service\Search\SearchService\SearchProviderInterface;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\CocktailResponse;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderOptionsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderResultsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsResponse;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\IngredientResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\OptionItemResponse;

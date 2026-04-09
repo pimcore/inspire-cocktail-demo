@@ -8,10 +8,10 @@ export const CocktailFinderButton = (): React.JSX.Element => {
   return (
     <>
       <IconButton
-        icon={ { value: 'cocktail-glass' } }
+        icon={ { value: 'cocktail-finder' } }
         onClick={ () => { setOpen(true) } }
-        theme="primary"
         tooltip={ { title: 'Find my cocktail' } }
+        type="text"
       />
 
       <CocktailFinderModal

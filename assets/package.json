@@ -12,7 +12,7 @@
   },
   "license": "proprietary",
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "1.0.0-canary.20260403-152759-e15052f",
+    "@pimcore/studio-ui-bundle": "^1.0.0-canary.20260408-083445-d99f41c",
     "react": "18.3.x",
     "react-dom": "18.3.x",
     "uuid": "^10.0.0"

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Pimcore\Bundle\InspireCocktailDemoBundle\Service;
 
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderOptionsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderResultsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsResponse;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsResponse;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 

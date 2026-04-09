@@ -12,7 +12,7 @@ use Pimcore\Bundle\StudioBackendBundle\OpenApi\Attribute\Response\SuccessRespons
 use Pimcore\Bundle\StudioBackendBundle\Util\Constant\HttpResponseCodes;
 use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Prefix;
 use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Tags;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderResultsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Service\FinderServiceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

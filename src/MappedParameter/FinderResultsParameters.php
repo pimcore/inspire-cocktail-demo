@@ -1,24 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Pimcore\Bundle\InspireCocktailDemoBundle\Schema;
+namespace Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter;
 
 /**
  * @internal
  */
-final readonly class FinderOptionsParameters
+final readonly class FinderResultsParameters
 {
     public function __construct(
-        private ?string $field = null,
         private ?string $strength = null,
         private ?string $occasion = null,
         private ?string $flavourProfile = null,
     ) {
-    }
-
-    public function getField(): ?string
-    {
-        return $this->field;
     }
 
     public function getStrength(): ?string
