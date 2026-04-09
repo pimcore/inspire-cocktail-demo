@@ -8,9 +8,8 @@ interface PrefillEntry {
 }
 
 const PREFILL_COCKTAILS: PrefillEntry[] = [
-  { path: '/Cocktail Demo/Cocktails/negroni', quantity: 2 },
-  { path: '/Cocktail Demo/Cocktails/mojito', quantity: 1 },
-  { path: '/Cocktail Demo/Cocktails/aperol-spritz', quantity: 3 }
+  { path: '/Cocktail Demo/Cocktails/aperol-spritz', quantity: 3 },
+  { path: '/Cocktail Demo/Cocktails/mojito', quantity: 1 }
 ]
 
 interface PathQueryResult {
@@ -40,9 +39,8 @@ export const useShoppingListPrefill = (): void => {
 
   const result0 = usePathQuery(PREFILL_COCKTAILS[0])
   const result1 = usePathQuery(PREFILL_COCKTAILS[1])
-  const result2 = usePathQuery(PREFILL_COCKTAILS[2])
 
-  const results = [result0, result1, result2]
+  const results = [result0, result1]
   const allResolved = results.every((r) => !r.isLoading && r.id !== undefined)
 
   useEffect(() => {

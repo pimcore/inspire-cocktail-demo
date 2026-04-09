@@ -1,6 +1,19 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { Button, Table, Empty, Skeleton } from 'antd'
+import { Empty, Skeleton } from 'antd'
 import { isNil } from 'lodash'
+import { createColumnHelper } from '@tanstack/react-table'
+import {
+  ContentLayout,
+  Content,
+  Header,
+  Toolbar,
+  FormKit,
+  Form,
+  InputNumber,
+  Grid,
+  Button,
+  IconButton
+} from '@pimcore/studio-ui-bundle/components'
 import { useDataObjectGetByIdQuery } from '@pimcore/studio-ui-bundle/api/data-object'
 import type { DataObjectWithDetailData } from '@pimcore/studio-ui-bundle/api/data-object'
 import { useShoppingList } from '../../hooks/use-shopping-list'
@@ -9,8 +22,6 @@ import { useStyles } from './shopping-list-container.styles'
 
 // ─── Local types ─────────────────────────────────────────────────────────────
 
-// Shape of a single entry in the Cocktail.ingredients advancedManyToManyObjectRelation
-// as returned by the Pimcore Studio Backend API
 interface CocktailIngredientMeta {
   element: {
     id: number
@@ -24,7 +35,6 @@ interface CocktailIngredientMeta {
   data: Record<string, string | number | null> | null
 }
 
-// Shape of the objectData field on a Cocktail data object
 interface CocktailObjectData {
   ingredients?: CocktailIngredientMeta[]
   localizedfields?: {
@@ -36,14 +46,51 @@ interface CocktailObjectData {
 interface AggregatedIngredient {
   id: number
   name: string
+  fullPath: string
+  elementId: number
+  published: boolean | null
   totalAmount: number
 }
 
 interface IngredientTableRow {
   key: string
   name: string
+  fullPath: string
+  elementId: number
+  published: boolean | null
   totalAmount: number
 }
+
+// ─── Grid columns (defined once at module level) ──────────────────────────────
+
+const columnHelper = createColumnHelper<IngredientTableRow>()
+
+const INGREDIENT_COLUMNS = [
+  columnHelper.accessor('name', {
+    header: 'Ingredient',
+    size: 200,
+    meta: {
+      type: 'element',
+      editable: false,
+      clearable: false,
+      config: {
+        getElementInfo: (props: { row: { original: unknown } }) => {
+          const row = props.row.original as IngredientTableRow
+          return {
+            elementType: 'data-object' as const,
+            id: row.elementId,
+            fullPath: row.fullPath,
+            published: row.published ?? undefined
+          }
+        }
+      }
+    }
+  }),
+  columnHelper.accessor('totalAmount', {
+    header: 'Amount',
+    size: 80
+  })
+]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -61,32 +108,15 @@ const resolveIngredients = (data: DataObjectWithDetailData): CocktailIngredientM
   return objectData?.ingredients ?? []
 }
 
-const INGREDIENT_TABLE_COLUMNS = [
-  {
-    title: 'Ingredient',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'totalAmount',
-    key: 'totalAmount',
-    width: 100,
-    align: 'right' as const
-  }
-]
-
 // ─── CocktailRow ──────────────────────────────────────────────────────────────
 
 interface CocktailRowProps {
   cocktailId: number
-  quantity: number
-  onIncrement: () => void
-  onDecrement: () => void
+  onRemove: () => void
 }
 
 const CocktailRow = (props: CocktailRowProps): React.JSX.Element => {
-  const { cocktailId, quantity, onIncrement, onDecrement } = props
+  const { cocktailId, onRemove } = props
   const { styles } = useStyles()
 
   const { data, isLoading } = useDataObjectGetByIdQuery({ id: cocktailId })
@@ -99,50 +129,42 @@ const CocktailRow = (props: CocktailRowProps): React.JSX.Element => {
     ? resolveCocktailName(cocktailData)
     : `Cocktail #${cocktailId}`
 
-  if (isLoading) {
-    return (
-      <div className={ styles.cocktailSection }>
-        <Skeleton
-          active
-          paragraph={ { rows: 1 } }
-          title={ false }
-        />
-      </div>
-    )
-  }
-
   return (
-    <div className={ styles.cocktailSection }>
-      <div className={ styles.cocktailHeader }>
-        <span className={ styles.cocktailName }>{ name }</span>
+    <div className={ styles.cocktailRow }>
+      <span className={ styles.cocktailName }>
+        { isLoading
+          ? (
+            <Skeleton
+              active
+              paragraph={ false }
+              style={ { width: 120 } }
+              title={ { width: 120 } }
+            />
+          )
+          : name }
+      </span>
 
-        <div className={ styles.quantityControls }>
-          <Button
-            onClick={ onDecrement }
-            size="small"
-            type="text"
-          >
-            −
-          </Button>
+      <div className={ styles.cocktailControls }>
+        <Form.Item
+          name={ String(cocktailId) }
+          noStyle
+        >
+          <InputNumber
+            min={ 1 }
+            style={ { width: 72 } }
+          />
+        </Form.Item>
 
-          <span className={ styles.quantityValue }>{ quantity }</span>
-
-          <Button
-            onClick={ onIncrement }
-            size="small"
-            type="text"
-          >
-            +
-          </Button>
-        </div>
+        <IconButton
+          icon={ { value: 'close' } }
+          onClick={ onRemove }
+        />
       </div>
     </div>
   )
 }
 
 // ─── CocktailIngredientFetcher ────────────────────────────────────────────────
-// Fetches one cocktail's data and reports resolved ingredients via useEffect.
-// Renders nothing — used purely for data fetching in a hook-safe way.
 
 interface CocktailIngredientFetcherProps {
   cocktailId: number
@@ -151,14 +173,20 @@ interface CocktailIngredientFetcherProps {
 
 const CocktailIngredientFetcher = (props: CocktailIngredientFetcherProps): null => {
   const { cocktailId, onResolved } = props
-  const { data } = useDataObjectGetByIdQuery({ id: cocktailId })
+  const { data, isError } = useDataObjectGetByIdQuery({ id: cocktailId })
 
   useEffect(() => {
-    if (!isNil(data) && 'objectData' in data) {
-      const ingredients = resolveIngredients(data as DataObjectWithDetailData)
-      onResolved(cocktailId, ingredients)
+    // Resolve with empty array on error so the loading state doesn't get stuck
+    if (isError) {
+      onResolved(cocktailId, [])
+      return
     }
-  }, [data, cocktailId, onResolved])
+    if (isNil(data)) return
+    const ingredients = ('objectData' in data)
+      ? resolveIngredients(data as DataObjectWithDetailData)
+      : []
+    onResolved(cocktailId, ingredients)
+  }, [data, isError, cocktailId, onResolved])
 
   return null
 }
@@ -166,16 +194,25 @@ const CocktailIngredientFetcher = (props: CocktailIngredientFetcherProps): null 
 // ─── ShoppingListContainer ────────────────────────────────────────────────────
 
 export const ShoppingListContainer = (): React.JSX.Element => {
-  const { styles } = useStyles()
-  const { items, totalCount, addCocktail, removeCocktail, clearShoppingList } = useShoppingList()
+  const { items, removeCocktail, setCocktailQuantity, clearShoppingList } = useShoppingList()
 
-  // Seed the list with demo cocktails on first mount
   useShoppingListPrefill()
+
+  const [form] = Form.useForm()
 
   const cocktailIds = Object.keys(items).map(Number)
   const isEmpty = cocktailIds.length === 0
 
-  // State: raw ingredients per cocktail ID — drives re-render when resolved
+  // Sync Redux state into the form whenever items change
+  useEffect(() => {
+    const formValues: Record<string, number> = {}
+    Object.entries(items).forEach(([id, qty]) => {
+      formValues[id] = qty
+    })
+    form.setFieldsValue(formValues)
+  }, [items, form])
+
+  // State: raw ingredients per cocktail ID
   const [resolvedIngredients, setResolvedIngredients] = useState<Record<number, CocktailIngredientMeta[]>>({})
 
   const handleIngredientResolved = useMemo(() => (
@@ -186,6 +223,17 @@ export const ShoppingListContainer = (): React.JSX.Element => {
       })
     }
   ), [])
+
+  const handleValuesChange = (changedValues: Record<string, number | null>): void => {
+    Object.entries(changedValues).forEach(([key, value]) => {
+      const id = Number(key)
+      if (isNil(value) || value <= 0) {
+        removeCocktail(id)
+      } else {
+        setCocktailQuantity(id, value)
+      }
+    })
+  }
 
   // Aggregate ingredients across all cocktails, multiplied by quantity
   const ingredientRows: IngredientTableRow[] = useMemo(() => {
@@ -203,14 +251,17 @@ export const ShoppingListContainer = (): React.JSX.Element => {
 
         const existing = aggregated.get(ingredientId)
         if (!isNil(existing)) {
-          existing.totalAmount += amount * quantity
-        } else {
-          aggregated.set(ingredientId, {
-            id: ingredientId,
-            name: ingredientName,
-            totalAmount: amount * quantity
-          })
-        }
+            existing.totalAmount += amount * quantity
+          } else {
+            aggregated.set(ingredientId, {
+              id: ingredientId,
+              name: ingredientName,
+              fullPath: meta.element.fullPath,
+              elementId: ingredientId,
+              published: meta.element.isPublished,
+              totalAmount: amount * quantity
+            })
+          }
       })
     })
 
@@ -219,12 +270,34 @@ export const ShoppingListContainer = (): React.JSX.Element => {
       .map((ing) => ({
         key: String(ing.id),
         name: ing.name,
+        fullPath: ing.fullPath,
+        elementId: ing.elementId,
+        published: ing.published,
         totalAmount: ing.totalAmount
       }))
-  }, [resolvedIngredients, items, cocktailIds])
+  }, [resolvedIngredients, items])
+
+  const isResolving = !isEmpty && cocktailIds.some((id) => isNil(resolvedIngredients[id]))
 
   return (
-    <div className={ styles.container }>
+    <ContentLayout
+      renderToolbar={
+        !isEmpty
+          ? (
+            <Toolbar justify="flex-end">
+              <Button
+                danger
+                onClick={ clearShoppingList }
+                size="small"
+                type="text"
+              >
+                Clear
+              </Button>
+            </Toolbar>
+          )
+          : undefined
+      }
+    >
       { /* Hidden fetchers — one per cocktail, safe hook usage */ }
       { cocktailIds.map((id) => (
         <CocktailIngredientFetcher
@@ -234,66 +307,42 @@ export const ShoppingListContainer = (): React.JSX.Element => {
         />
       )) }
 
-      <div className={ styles.header }>
-        <div className={ styles.headerTitle }>
-          <span>Shopping List</span>
+      <Content
+        loading={ isResolving }
+        padded
+      >
+        <Header title="Shopping List" />
 
-          { !isEmpty && (
-            <span className={ styles.headerCount }>
-              ({ totalCount } cocktail{ totalCount !== 1 ? 's' : '' })
-            </span>
-          ) }
-        </div>
-
-        { !isEmpty && (
-          <Button
-            danger
-            onClick={ clearShoppingList }
-            size="small"
-            type="text"
-          >
-            Clear
-          </Button>
-        ) }
-      </div>
-
-      <div className={ styles.content }>
         { isEmpty && (
-          <div className={ styles.emptyState }>
-            <Empty
-              description="No cocktails in your shopping list yet"
-              image={ Empty.PRESENTED_IMAGE_SIMPLE }
-            />
-          </div>
+          <Empty
+            description="No cocktails in your shopping list yet"
+            image={ Empty.PRESENTED_IMAGE_SIMPLE }
+          />
         ) }
 
         { !isEmpty && (
           <>
-            { cocktailIds.map((id) => (
-              <CocktailRow
-                cocktailId={ id }
-                key={ id }
-                onDecrement={ () => { removeCocktail(id) } }
-                onIncrement={ () => { addCocktail(id) } }
-                quantity={ items[id] ?? 1 }
-              />
-            )) }
+            <FormKit formProps={ { form, onValuesChange: handleValuesChange } }>
+              { cocktailIds.map((id) => (
+                <CocktailRow
+                  cocktailId={ id }
+                  key={ id }
+                  onRemove={ () => { removeCocktail(id) } }
+                />
+              )) }
+            </FormKit>
 
-            <div className={ styles.summarySection }>
-              <div className={ styles.summaryTitle }>
-                Ingredients needed
-              </div>
-
-              <Table<IngredientTableRow>
-                columns={ INGREDIENT_TABLE_COLUMNS }
-                dataSource={ ingredientRows }
-                pagination={ false }
+            <FormKit.Panel title="Ingredients needed">
+              <Grid
+                autoWidth
+                columns={ INGREDIENT_COLUMNS }
+                data={ ingredientRows }
                 size="small"
               />
-            </div>
+            </FormKit.Panel>
           </>
         ) }
-      </div>
-    </div>
+      </Content>
+    </ContentLayout>
   )
 }
