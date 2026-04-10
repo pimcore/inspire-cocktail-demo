@@ -11,3 +11,24 @@ bundle_cocktail_demo_finder_results_get_description: |
     Returns cocktails matching the provided filter selections for strength, occasion, and flavourProfile.
     All filters are optional; omitting a filter returns all values for that field.
 bundle_cocktail_demo_finder_results_get_success_description: 'List of matching cocktails with full details'
+
+bundle_tag_inspire_cocktail_demo_description: 'Operations related to the Inspire Cocktail Demo Bundle'
+
+bundle_inspire_cocktail_demo_cocktail_collection_description: 'Returns a paginated list of cocktails with basic information including name, glass type, preparation method, and strength.'
+bundle_inspire_cocktail_demo_cocktail_collection_summary: 'List all cocktails'
+bundle_inspire_cocktail_demo_cocktail_collection_success_response: 'Paginated list of cocktails with basic details'
+
+bundle_inspire_cocktail_demo_cocktail_get_description: 'Returns the full details of a single cocktail by ID, including description, flavour profile, occasion tags, and ingredients with amounts.'
+bundle_inspire_cocktail_demo_cocktail_get_summary: 'Get cocktail details'
+bundle_inspire_cocktail_demo_cocktail_get_success_response: 'Full cocktail details including ingredients'
+
+bundle_inspire_cocktail_demo_cocktail_update_description: 'Updates a cocktail by ID. Only provided fields are updated. Localized fields (name, description, instructions) are updated for the specified locale.'
+bundle_inspire_cocktail_demo_cocktail_update_summary: 'Update a cocktail'
+bundle_inspire_cocktail_demo_cocktail_update_success_response: 'Updated cocktail details'
+
+bundle_inspire_cocktail_demo_shopping_list_calculate_description: |
+    Accepts a list of cocktails with quantities and returns the full cocktail details
+    along with an aggregated shopping list of ingredients with total amounts needed.
+    Ingredients without a defined amount are skipped.
+bundle_inspire_cocktail_demo_shopping_list_calculate_summary: 'Calculate shopping list for cocktails'
+bundle_inspire_cocktail_demo_shopping_list_calculate_success_response: 'Shopping list with cocktails and aggregated ingredients'

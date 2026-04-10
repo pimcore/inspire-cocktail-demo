@@ -6,8 +6,8 @@ namespace Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config;
 use OpenApi\Attributes\Tag;
 
 #[Tag(
-    name: Tags::CocktailDemo->value,
-    description: 'bundle_tag_cocktail_demo_description',
+    name: Tags::InspireCocktailDemo->value,
+    description: 'bundle_tag_inspire_cocktail_demo_description',
 )]
 /**
  * @internal
@@ -15,4 +15,5 @@ use OpenApi\Attributes\Tag;
 enum Tags: string
 {
     case CocktailDemo = 'Bundle Cocktail Demo';
+    case InspireCocktailDemo = 'Bundle Inspire Cocktail Demo';
 }

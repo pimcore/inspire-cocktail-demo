@@ -8,7 +8,8 @@
     "build": "rsbuild build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./js",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./js --fix",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "build-api-client": "TS_NODE_COMPILER_OPTIONS='{\"moduleResolution\":\"node\"}' npx @rtk-query/codegen-openapi ./build/api/openapi-config.ts"
   },
   "license": "proprietary",
   "dependencies": {
@@ -22,8 +23,10 @@
     "@rsbuild/core": "^1.3.16",
     "@rsbuild/plugin-react": "^1.3.1",
     "@rsbuild/plugin-svgr": "^1.3.1",
+    "@rtk-query/codegen-openapi": "^1.2.0",
     "@types/react-dom": "18.3.x",
     "@types/webpack-env": "^1.18.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }

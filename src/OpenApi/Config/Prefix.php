@@ -10,5 +10,5 @@ use Pimcore\Bundle\StudioBackendBundle\Controller\AbstractApiController;
  */
 final class Prefix
 {
-    public const string BUNDLE = AbstractApiController::PREFIX . '/bundle/cocktail-demo';
+    public const string BUNDLE = AbstractApiController::PREFIX . '/bundle/inspire-cocktail-demo';
 }

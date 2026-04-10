@@ -1,0 +1,6 @@
+cocktail-demo.add-to-shopping-list: "Add to Shopping List"
+cocktail-demo.field-definition.add-to-shopping-list.settings: "Add to Shopping List Settings"
+cocktail-demo.field-definition.add-to-shopping-list.default-amount: "Default Amount"
+field-definition.groups.interaction: "Interaction"
+grid.advanced-column.advancedColumns.group.party: Party
+grid.advanced-column.advancedColumns.ingredientsToPartyMode: Ingredients to PartyMode
