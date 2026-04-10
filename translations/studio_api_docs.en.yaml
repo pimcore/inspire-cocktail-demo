@@ -1,5 +1,3 @@
-bundle_tag_cocktail_demo_description: 'Cocktail Demo bundle endpoints'
-
 bundle_cocktail_demo_finder_options_get_summary: 'Get available options for a finder field'
 bundle_cocktail_demo_finder_options_get_description: |
     Returns distinct values with counts for the requested cocktail field (strength, occasion, or flavourProfile),

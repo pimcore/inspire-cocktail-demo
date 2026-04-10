@@ -7,15 +7,17 @@ use Pimcore\Bundle\GenericDataIndexBundle\Model\Search\Modifier\Filter\Basic\Exc
 use Pimcore\Bundle\GenericDataIndexBundle\Model\Search\Modifier\Filter\FieldType\MultiSelectFilter;
 use Pimcore\Bundle\GenericDataIndexBundle\Service\Search\SearchService\DataObject\DataObjectSearchServiceInterface;
 use Pimcore\Bundle\GenericDataIndexBundle\Service\Search\SearchService\SearchProviderInterface;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\CocktailResponse;
+use Pimcore\Bundle\InspireCocktailDemoBundle\Event\CocktailEvent;
+use Pimcore\Bundle\InspireCocktailDemoBundle\Hydrator\FinderHydratorInterface;
 use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderOptionsParameters;
 use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderResultsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\Repository\CocktailRepositoryInterface;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderResultsResponse;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\IngredientResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\OptionItemResponse;
 use Pimcore\Bundle\InspireCocktailDemoBundle\Search\TermsAggregationModifier;
-use Pimcore\Model\DataObject\Cocktail;
+use Pimcore\Bundle\StudioBackendBundle\Exception\Api\NotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -30,6 +32,9 @@ final readonly class FinderService implements FinderServiceInterface
     public function __construct(
         private SearchProviderInterface $searchProvider,
         private DataObjectSearchServiceInterface $searchService,
+        private CocktailRepositoryInterface $cocktailRepository,
+        private FinderHydratorInterface $finderHydrator,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -83,13 +88,15 @@ final readonly class FinderService implements FinderServiceInterface
 
         $cocktails = [];
         foreach ($result->getIds() as $id) {
-            $cocktail = Cocktail::getById($id);
-
-            if (!$cocktail instanceof Cocktail) {
+            try {
+                $cocktail = $this->cocktailRepository->getCocktailById($id);
+            } catch (NotFoundException) {
                 continue;
             }
 
-            $cocktails[] = $this->hydrateCocktail($cocktail);
+            $hydrated = $this->finderHydrator->hydrate($cocktail, $parameters->getLocale());
+            $this->eventDispatcher->dispatch(new CocktailEvent($hydrated), CocktailEvent::EVENT_NAME);
+            $cocktails[] = $hydrated;
         }
 
         return new FinderResultsResponse($cocktails);
@@ -115,37 +122,6 @@ final readonly class FinderService implements FinderServiceInterface
 
             $search->addModifier(new MultiSelectFilter($field, [$value]));
         }
-    }
-
-    private function hydrateCocktail(Cocktail $cocktail): CocktailResponse
-    {
-        $ingredients = [];
-        foreach ($cocktail->getIngredients() as $meta) {
-            $ingredient = $meta->getObject();
-
-            if ($ingredient === null) {
-                continue;
-            }
-
-            $ingredients[] = new IngredientResponse(
-                name: (string) $ingredient->getName('en'),
-                amount: $meta->getAmount() !== null ? (float) $meta->getAmount() : null,
-                unit: $ingredient->getUnit() !== '' ? $ingredient->getUnit() : null,
-                notes: $meta->getNotes() !== '' ? $meta->getNotes() : null,
-            );
-        }
-
-        return new CocktailResponse(
-            id: (int) $cocktail->getId(),
-            name: (string) $cocktail->getName('en'),
-            description: $cocktail->getDescription('en'),
-            glassType: $cocktail->getGlassType(),
-            preparationMethod: $cocktail->getPreparationMethod(),
-            strength: $cocktail->getStrength(),
-            flavourProfile: $cocktail->getFlavourProfile() ?? [],
-            occasion: $cocktail->getOccasion() ?? [],
-            ingredients: $ingredients,
-        );
     }
 
     private function formatLabel(string $value): string

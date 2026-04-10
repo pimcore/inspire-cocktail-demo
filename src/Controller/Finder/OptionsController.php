@@ -5,20 +5,21 @@ namespace Pimcore\Bundle\InspireCocktailDemoBundle\Controller\Finder;
 
 use OpenApi\Attributes\Get;
 use OpenApi\Attributes\JsonContent;
+use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderOptionsParameters;
+use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Prefix;
+use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Tags;
+use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsResponse;
+use Pimcore\Bundle\InspireCocktailDemoBundle\Service\FinderServiceInterface;
 use Pimcore\Bundle\StudioBackendBundle\Controller\AbstractApiController;
 use Pimcore\Bundle\StudioBackendBundle\OpenApi\Attribute\Parameter\Query\TextFieldParameter;
 use Pimcore\Bundle\StudioBackendBundle\OpenApi\Attribute\Response\DefaultResponses;
 use Pimcore\Bundle\StudioBackendBundle\OpenApi\Attribute\Response\SuccessResponse;
-use Pimcore\Bundle\StudioBackendBundle\OpenApi\Config\Tags as StudioTags;
 use Pimcore\Bundle\StudioBackendBundle\Util\Constant\HttpResponseCodes;
-use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Prefix;
-use Pimcore\Bundle\InspireCocktailDemoBundle\OpenApi\Config\Tags;
-use Pimcore\Bundle\InspireCocktailDemoBundle\MappedParameter\FinderOptionsParameters;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Schema\FinderOptionsResponse;
-use Pimcore\Bundle\InspireCocktailDemoBundle\Service\FinderServiceInterface;
+use Pimcore\Bundle\StudioBackendBundle\Util\Constant\UserPermissions;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -41,7 +42,7 @@ final class OptionsController extends AbstractApiController
         operationId: 'bundle_cocktail_demo_finder_options_get',
         description: 'bundle_cocktail_demo_finder_options_get_description',
         summary: 'bundle_cocktail_demo_finder_options_get_summary',
-        tags: [Tags::CocktailDemo->value]
+        tags: [Tags::InspireCocktailDemo->value],
     )]
     #[TextFieldParameter(name: 'field', description: 'The field to aggregate options for', required: true, example: 'strength')]
     #[TextFieldParameter(name: 'strength', description: 'Active strength filter', required: false, example: 'medium')]
@@ -49,8 +50,9 @@ final class OptionsController extends AbstractApiController
     #[TextFieldParameter(name: 'flavourProfile', description: 'Active flavour profile filter', required: false, example: 'bitter')]
     #[SuccessResponse(
         description: 'bundle_cocktail_demo_finder_options_get_success_description',
-        content: new JsonContent(ref: FinderOptionsResponse::class)
+        content: new JsonContent(ref: FinderOptionsResponse::class),
     )]
+    #[IsGranted(UserPermissions::PIMCORE_USER->value)]
     #[DefaultResponses([HttpResponseCodes::UNAUTHORIZED, HttpResponseCodes::UNPROCESSABLE_CONTENT])]
     public function getOptions(
         #[MapQueryString] FinderOptionsParameters $parameters = new FinderOptionsParameters(),

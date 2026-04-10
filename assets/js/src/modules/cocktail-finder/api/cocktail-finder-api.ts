@@ -49,7 +49,7 @@ export interface GetResultsParams {
 
 export const cocktailFinderApi = createApi({
   reducerPath: 'cocktailFinderApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/pimcore-studio/api/bundle/cocktail-demo' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/pimcore-studio/api/bundle/inspire-cocktail-demo' }),
   endpoints: (builder) => ({
     getOptions: builder.query<FiniderOptionsResponse, GetOptionsParams>({
       query: (params) => {

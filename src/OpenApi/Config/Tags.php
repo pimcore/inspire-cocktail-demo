@@ -14,6 +14,5 @@ use OpenApi\Attributes\Tag;
  */
 enum Tags: string
 {
-    case CocktailDemo = 'Bundle Cocktail Demo';
     case InspireCocktailDemo = 'Bundle Inspire Cocktail Demo';
 }

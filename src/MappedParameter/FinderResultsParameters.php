@@ -12,6 +12,7 @@ final readonly class FinderResultsParameters
         private ?string $strength = null,
         private ?string $occasion = null,
         private ?string $flavourProfile = null,
+        private string $locale = 'en',
     ) {
     }
 
@@ -28,5 +29,10 @@ final readonly class FinderResultsParameters
     public function getFlavourProfile(): ?string
     {
         return $this->flavourProfile;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
     }
 }

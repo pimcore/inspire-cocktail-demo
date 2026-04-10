@@ -13,8 +13,8 @@ use Pimcore\Bundle\StudioBackendBundle\Util\Trait\AdditionalAttributesTrait;
  * @internal
  */
 #[Schema(
-    schema: 'BundleCocktailDemoFinderResultsResponse',
-    title: 'Bundle Cocktail Demo Finder Results Response',
+    schema: 'BundleInspireCocktailDemoFinderResultsResponse',
+    title: 'Bundle Inspire Cocktail Demo Finder Results Response',
     required: ['cocktails'],
     type: 'object'
 )]
@@ -26,7 +26,7 @@ final class FinderResultsResponse implements AdditionalAttributesInterface
         #[Property(
             description: 'Matching cocktails',
             type: 'array',
-            items: new Items(ref: CocktailResponse::class)
+            items: new Items(ref: Cocktail::class)
         )]
         private readonly array $cocktails,
     ) {
