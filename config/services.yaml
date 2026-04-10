@@ -10,3 +10,18 @@ services:
 
     Pimcore\Bundle\InspireCocktailDemoBundle\Command\:
         resource: '../src/Command'
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\Search\:
+        resource: '../src/Search'
+
+    # Hydrator
+    Pimcore\Bundle\InspireCocktailDemoBundle\Hydrator\FinderHydratorInterface:
+        class: Pimcore\Bundle\InspireCocktailDemoBundle\Hydrator\FinderHydrator
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\Service\FinderServiceInterface:
+        class: Pimcore\Bundle\InspireCocktailDemoBundle\Service\FinderService
+
+    Pimcore\Bundle\InspireCocktailDemoBundle\Controller\Finder\:
+        resource: '../src/Controller/Finder'
+        public: true
+        tags: ['controller.service_arguments']

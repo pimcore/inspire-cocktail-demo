@@ -1,5 +1,6 @@
 pimcore_studio_backend:
     open_api_scan_paths:
+        - '%kernel.project_dir%/vendor/pimcore/inspire-cocktail-demo/src/Controller/Finder'
         - '%kernel.project_dir%/vendor/pimcore/inspire-cocktail-demo/src/Controller/Studio'
         - '%kernel.project_dir%/vendor/pimcore/inspire-cocktail-demo/src/MappedParameter'
         - '%kernel.project_dir%/vendor/pimcore/inspire-cocktail-demo/src/OpenApi'

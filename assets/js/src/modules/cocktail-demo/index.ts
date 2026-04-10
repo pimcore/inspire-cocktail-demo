@@ -1,5 +1,6 @@
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 import { CocktailDemoModule } from './modules/cocktail-demo-module'
+import { CocktailFinderModule } from '../cocktail-finder'
 import { DynamicTypeFieldDefinitionAddToShoppingList } from './dynamic-types/field-definition/dynamic-type-field-definition-add-to-shopping-list'
 import { DynamicTypeObjectLayoutAddToShoppingList } from './dynamic-types/object-layout/dynamic-type-object-layout-add-to-shopping-list'
 
@@ -20,5 +21,6 @@ export const CocktailDemoPlugin: IAbstractPlugin = {
 
   onStartup ({ moduleSystem }) {
     moduleSystem.registerModule(CocktailDemoModule)
+    moduleSystem.registerModule(CocktailFinderModule)
   }
 }

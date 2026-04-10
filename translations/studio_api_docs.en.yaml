@@ -1,3 +1,15 @@
+bundle_cocktail_demo_finder_options_get_summary: 'Get available options for a finder field'
+bundle_cocktail_demo_finder_options_get_description: |
+    Returns distinct values with counts for the requested cocktail field (strength, occasion, or flavourProfile),
+    optionally filtered by the currently active selections in other fields.
+bundle_cocktail_demo_finder_options_get_success_description: 'Available options with counts for the requested field'
+
+bundle_cocktail_demo_finder_results_get_summary: 'Get cocktails matching the finder selections'
+bundle_cocktail_demo_finder_results_get_description: |
+    Returns cocktails matching the provided filter selections for strength, occasion, and flavourProfile.
+    All filters are optional; omitting a filter returns all values for that field.
+bundle_cocktail_demo_finder_results_get_success_description: 'List of matching cocktails with full details'
+
 bundle_tag_inspire_cocktail_demo_description: 'Operations related to the Inspire Cocktail Demo Bundle'
 
 bundle_inspire_cocktail_demo_cocktail_collection_description: 'Returns a paginated list of cocktails with basic information including name, glass type, preparation method, and strength.'

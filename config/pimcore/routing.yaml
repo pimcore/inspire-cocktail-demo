@@ -1,3 +1,10 @@
+pimcore_studio_api_cocktail_demo:
+    resource: "@PimcoreInspireCocktailDemoBundle/src/Controller/Finder"
+    type: attribute
+    prefix: '%pimcore_studio_backend.url_prefix%/bundle/inspire-cocktail-demo'
+    options:
+        expose: true
+
 pimcore_inspire_cocktail_demo_studio:
     resource: '@PimcoreInspireCocktailDemoBundle/src/Controller/Studio'
     type: attribute
