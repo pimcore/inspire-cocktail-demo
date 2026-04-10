@@ -17,3 +17,7 @@ bin/console cocktail-demo:teardown
 ```
 
 Removes all objects, class definitions, and Select Options created by setup. Use `--force` to skip the confirmation prompt.
+
+
+## OpenCode session of the initial bundle setup
+https://opncd.ai/share/25nujRcu
